@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Movie Review Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>🎬 Mini Movie Review Hub</h1>
+        <p>Select a movie and leave your own review!</p>
+    </header>
+
+    <main>
+        <!-- Movie List -->
+        <section id="movie-list">
+            <h2>Movies</h2>
+            <ul>
+                <li class="movie-item" data-movie="Inception">Inception</li>
+                <li class="movie-item" data-movie="Interstellar">Interstellar</li>
+                <li class="movie-item" data-movie="The Matrix">The Matrix</li>
+            </ul>
+        </section>
+
+        <!-- Movie Details -->
+        <section id="movie-details">
+            <h2>Movie Details</h2>
+            <p id="movie-description">Click a movie to view its description.</p>
+        </section>
+
+        <!-- Review Form -->
+        <section id="review-section">
+            <h2>Write a Review</h2>
+            <textarea id="review-input" placeholder="Write your review..."></textarea>
+            <button id="submit-review">Submit Review</button>
+
+            <h3>User Reviews:</h3>
+            <ul id="review-list"></ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
