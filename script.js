@@ -123,7 +123,35 @@ submitReviewBtn.addEventListener("click", () => {
     reviewInput.value = "";
 });
 
+// --- Add New Movie ---
+const addMovieForm = document.getElementById("addMovieForm");
+
+addMovieForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById("newTitle").value.trim();
+  const description = document.getElementById("newDescription").value.trim();
+  const poster = document.getElementById("newPoster").value.trim();
+
+  if (!title || !description) return;
+
+  const newMovie = {
+    id: Date.now().toString(),   // unique ID
+    title,
+    description,
+    poster: poster || null
+  };
+
+  movies.push(newMovie); // add to array
+
+  renderMovieList(); // re-render sidebar
+
+  // Clear form
+  addMovieForm.reset();
+});
+
 // ---------------------------
 // Auto-select the first movie on page load
 // ---------------------------
 movieItems[0].click();
+
