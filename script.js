@@ -1,54 +1,36 @@
+// ---------------------------
 // Movie descriptions
+// ---------------------------
 const movieInfo = {
     "Inception": "A skilled thief enters people's dreams to steal ideas.",
     "Interstellar": "A team travels through a wormhole in search of a new home for humanity.",
     "The Matrix": "A hacker discovers the world is a simulated reality."
 };
 
+// ---------------------------
+// DOM elements
+// ---------------------------
+const movieItems = document.querySelectorAll(".movie-item");
+const movieDescription = document.getElementById("movie-description");
+const reviewInput = document.getElementById("review-input");
+const submitReviewBtn = document.getElementById("submit-review");
+const reviewList = document.getElementById("review-list");
+const stars = document.querySelectorAll(".star");
+
+let selectedRating = 0;
+
+// ---------------------------
 // Load or initialize review storage
+// ---------------------------
 let movieReviews = JSON.parse(localStorage.getItem("movieReviews")) || {
     "Inception": [],
     "Interstellar": [],
     "The Matrix": []
 };
 
-let selectedRating = 0;
-const stars = document.querySelectorAll(".star");
-
-// DOM elements
-const movieItems = document.querySelectorAll(".movie-item");
-const movieDescription = document.getElementById("movie-description");
-const reviewInput = document.getElementById("review-input");
-const submitReviewBtn = document.getElementById("submit-review");
-const reviewList = document.getElementById("review-list");
-
-// Load saved reviews from localStorage
-function loadReviews() {
-    const saved = JSON.parse(localStorage.getItem("reviews")) || [];
-
-    saved.forEach(text => {
-        const li = document.createElement("li");
-        li.textContent = text;
-        reviewList.appendChild(li);
-    });
-}
-loadReviews();
-
-// Movie selection event
-movieItems.forEach(item => {
-    item.addEventListener("click", () => {
-        // Highlight selected movie
-        movieItems.forEach(m => m.classList.remove("selected"));
-        item.classList.add("selected");
-
-        const movie = item.getAttribute("data-movie");
-        movieDescription.textContent = movieInfo[movie];
-
-        // Display that movie's reviews
-        updateReviewList(movie);
-    });
-});
-
+// ---------------------------
+// Star rating click behavior
+// ---------------------------
 stars.forEach(star => {
     star.addEventListener("click", () => {
         selectedRating = parseInt(star.getAttribute("data-value"));
@@ -60,21 +42,45 @@ stars.forEach(star => {
     });
 });
 
+// ---------------------------
+// Update review list for a movie
+// ---------------------------
 function updateReviewList(movie) {
-    reviewList.innerHTML = "";
+    reviewList.innerHTML = ""; // clear old reviews
 
     movieReviews[movie].forEach(review => {
         const li = document.createElement("li");
 
         // Create star display
-        const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+        const starDisplay = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
 
-        li.textContent = `${stars} — ${review.text}`;
+        li.textContent = `${starDisplay} — ${review.text}`;
         reviewList.appendChild(li);
     });
 }
 
+// ---------------------------
+// Movie selection event
+// ---------------------------
+movieItems.forEach(item => {
+    item.addEventListener("click", () => {
+
+        // Highlight the selected movie
+        movieItems.forEach(m => m.classList.remove("selected"));
+        item.classList.add("selected");
+
+        // Update description
+        const movie = item.getAttribute("data-movie");
+        movieDescription.textContent = movieInfo[movie];
+
+        // Load that movie's reviews
+        updateReviewList(movie);
+    });
+});
+
+// ---------------------------
 // Review submission event
+// ---------------------------
 submitReviewBtn.addEventListener("click", () => {
     const reviewText = reviewInput.value.trim();
 
@@ -88,7 +94,7 @@ submitReviewBtn.addEventListener("click", () => {
         return;
     }
 
-    // Find selected movie
+    // Check if a movie is selected
     const selected = document.querySelector(".movie-item.selected");
     if (!selected) {
         alert("Please select a movie first!");
@@ -102,21 +108,22 @@ submitReviewBtn.addEventListener("click", () => {
         rating: selectedRating,
         text: reviewText
     });
+
+    // Save to localStorage
     localStorage.setItem("movieReviews", JSON.stringify(movieReviews));
 
-    // Refresh list
+    // Refresh display
     updateReviewList(movie);
 
-    // Reset rating
+    // Reset rating stars
     selectedRating = 0;
     stars.forEach(s => s.classList.remove("selected"));
 
+    // Clear input
     reviewInput.value = "";
 });
 
-
-
-
-
-
-
+// ---------------------------
+// Auto-select the first movie on page load
+// ---------------------------
+movieItems[0].click();
