@@ -15,10 +15,18 @@ const reviewList = document.getElementById("review-list");
 // Movie selection event
 movieItems.forEach(item => {
     item.addEventListener("click", () => {
+        // Remove "selected" class from all items
+        movieItems.forEach(m => m.classList.remove("selected"));
+
+        // Add "selected" class to clicked item
+        item.classList.add("selected");
+
+        // Update description
         const movie = item.getAttribute("data-movie");
         movieDescription.textContent = movieInfo[movie];
     });
 });
+
 
 // Review submission event
 submitReviewBtn.addEventListener("click", () => {
@@ -35,3 +43,4 @@ submitReviewBtn.addEventListener("click", () => {
 
     reviewInput.value = "";
 });
+
