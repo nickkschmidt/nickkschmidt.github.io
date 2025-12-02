@@ -5,6 +5,13 @@ const movieInfo = {
     "The Matrix": "A hacker discovers the world is a simulated reality."
 };
 
+// Load or initialize review storage
+let movieReviews = JSON.parse(localStorage.getItem("movieReviews")) || {
+    "Inception": [],
+    "Interstellar": [],
+    "The Matrix": []
+};
+
 // DOM elements
 const movieItems = document.querySelectorAll(".movie-item");
 const movieDescription = document.getElementById("movie-description");
@@ -27,18 +34,26 @@ loadReviews();
 // Movie selection event
 movieItems.forEach(item => {
     item.addEventListener("click", () => {
-        // Remove "selected" class from all items
+        // Highlight selected movie
         movieItems.forEach(m => m.classList.remove("selected"));
-
-        // Add "selected" class to clicked item
         item.classList.add("selected");
 
-        // Update description
         const movie = item.getAttribute("data-movie");
         movieDescription.textContent = movieInfo[movie];
+
+        // Display that movie's reviews
+        updateReviewList(movie);
     });
 });
 
+function updateReviewList(movie) {
+    reviewList.innerHTML = ""; // clear old reviews
+    movieReviews[movie].forEach(text => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        reviewList.appendChild(li);
+    });
+}
 
 // Review submission event
 submitReviewBtn.addEventListener("click", () => {
@@ -49,18 +64,26 @@ submitReviewBtn.addEventListener("click", () => {
         return;
     }
 
-    const li = document.createElement("li");
-    li.textContent = reviewText;
-reviewList.appendChild(li);
+    // Find selected movie
+    const selected = document.querySelector(".movie-item.selected");
+    if (!selected) {
+        alert("Please select a movie first!");
+        return;
+    }
 
-// Save to localStorage
-let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
-reviews.push(reviewText);
-localStorage.setItem("reviews", JSON.stringify(reviews));
+    const movie = selected.getAttribute("data-movie");
 
-reviewInput.value = "";
+    // Save the new review
+    movieReviews[movie].push(reviewText);
+    localStorage.setItem("movieReviews", JSON.stringify(movieReviews));
 
+    // Update display
+    updateReviewList(movie);
+
+    reviewInput.value = "";
 });
+
+
 
 
 
