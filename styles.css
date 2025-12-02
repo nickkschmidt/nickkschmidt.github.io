@@ -20,24 +20,6 @@ main {
     padding: 0;
 }
 
-#star-rating {
-    margin-bottom: 10px;
-}
-
-.star {
-    font-size: 24px;
-    cursor: pointer;
-    color: #ccc;
-    transition: color 0.2s;
-}
-
-.star.selected,
-.star:hover,
-.star:hover ~ .star {
-    color: gold;
-}
-
-
 .movie-item {
     padding: 10px;
     margin: 5px 0;
@@ -52,8 +34,9 @@ main {
     background-color: #ececec;
 }
 
+/* ⭐ Highlight selected movie */
 .movie-item.selected {
-    background-color: #dbeafe;
+    background-color: #dbeafe; /* light blue */
     border: 2px solid #3b82f6;
 }
 
@@ -86,4 +69,24 @@ main {
     background-color: #ddd;
 }
 
+/* ⭐ STAR RATING STYLES */
+#star-rating {
+    margin-bottom: 10px;
+}
 
+.star {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+/* Selected stars turn gold */
+.star.selected {
+    color: gold;
+}
+
+/* Optional hover effect */
+.star:hover {
+    color: gold;
+}
