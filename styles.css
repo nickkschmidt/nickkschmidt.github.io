@@ -90,3 +90,31 @@ main {
 .star:hover {
     color: gold;
 }
+
+#addMovieForm {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  gap: 10px;
+}
+
+#addMovieForm input,
+#addMovieForm textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#addMovieForm button {
+  padding: 10px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#addMovieForm button:hover {
+  background: #45a049;
+}
