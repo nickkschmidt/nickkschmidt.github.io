@@ -12,6 +12,18 @@ const reviewInput = document.getElementById("review-input");
 const submitReviewBtn = document.getElementById("submit-review");
 const reviewList = document.getElementById("review-list");
 
+// Load saved reviews from localStorage
+function loadReviews() {
+    const saved = JSON.parse(localStorage.getItem("reviews")) || [];
+
+    saved.forEach(text => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        reviewList.appendChild(li);
+    });
+}
+loadReviews();
+
 // Movie selection event
 movieItems.forEach(item => {
     item.addEventListener("click", () => {
@@ -43,4 +55,5 @@ submitReviewBtn.addEventListener("click", () => {
 
     reviewInput.value = "";
 });
+
 
