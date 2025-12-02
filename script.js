@@ -12,6 +12,9 @@ let movieReviews = JSON.parse(localStorage.getItem("movieReviews")) || {
     "The Matrix": []
 };
 
+let selectedRating = 0;
+const stars = document.querySelectorAll(".star");
+
 // DOM elements
 const movieItems = document.querySelectorAll(".movie-item");
 const movieDescription = document.getElementById("movie-description");
@@ -46,11 +49,27 @@ movieItems.forEach(item => {
     });
 });
 
+stars.forEach(star => {
+    star.addEventListener("click", () => {
+        selectedRating = parseInt(star.getAttribute("data-value"));
+
+        // Update star visuals
+        stars.forEach(s => {
+            s.classList.toggle("selected", parseInt(s.getAttribute("data-value")) <= selectedRating);
+        });
+    });
+});
+
 function updateReviewList(movie) {
-    reviewList.innerHTML = ""; // clear old reviews
-    movieReviews[movie].forEach(text => {
+    reviewList.innerHTML = "";
+
+    movieReviews[movie].forEach(review => {
         const li = document.createElement("li");
-        li.textContent = text;
+
+        // Create star display
+        const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+
+        li.textContent = `${stars} — ${review.text}`;
         reviewList.appendChild(li);
     });
 }
@@ -64,6 +83,11 @@ submitReviewBtn.addEventListener("click", () => {
         return;
     }
 
+    if (selectedRating === 0) {
+        alert("Please choose a star rating!");
+        return;
+    }
+
     // Find selected movie
     const selected = document.querySelector(".movie-item.selected");
     if (!selected) {
@@ -73,15 +97,24 @@ submitReviewBtn.addEventListener("click", () => {
 
     const movie = selected.getAttribute("data-movie");
 
-    // Save the new review
-    movieReviews[movie].push(reviewText);
+    // Save review object
+    movieReviews[movie].push({
+        rating: selectedRating,
+        text: reviewText
+    });
     localStorage.setItem("movieReviews", JSON.stringify(movieReviews));
 
-    // Update display
+    // Refresh list
     updateReviewList(movie);
+
+    // Reset rating
+    selectedRating = 0;
+    stars.forEach(s => s.classList.remove("selected"));
 
     reviewInput.value = "";
 });
+
+
 
 
 
