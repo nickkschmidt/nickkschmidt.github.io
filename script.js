@@ -123,6 +123,12 @@ submitReviewBtn.addEventListener("click", () => {
     reviewInput.value = "";
 });
 
+document.getElementById("resetReviews").addEventListener("click", () => {
+  localStorage.removeItem("reviews");
+  alert("All reviews cleared!");
+  location.reload(); // refresh to update UI
+});
+
 // --- Add New Movie ---
 const addMovieForm = document.getElementById("addMovieForm");
 
@@ -154,4 +160,5 @@ addMovieForm.addEventListener("submit", (e) => {
 // Auto-select the first movie on page load
 // ---------------------------
 movieItems[0].click();
+
 
