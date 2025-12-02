@@ -24,44 +24,23 @@
             </ul>
         </section>
 
-        <h2>Add a New Movie</h2>
-        <form id="addMovieForm">
-          <label>Movie Title:</label>
-          <input type="text" id="newTitle" required>
-
-          <label>Description:</label>
-          <textarea id="newDescription" required></textarea>
-
-          <label>Poster URL (optional):</label>
-          <input type="text" id="newPoster">
-
-          <button type="submit">Add Movie</button>
-        </form>
-
         <!-- Movie Details -->
         <section id="movie-details">
             <h2>Movie Details</h2>
             <p id="movie-description">Click a movie to view its description.</p>
         </section>
 
-        <!-- Review Form -->
+        <!-- Review Section -->
         <section id="review-section">
             <h2>Write a Review</h2>
 
-            <!-- ⭐ STAR RATING FEATURE -->
-            <div id="star-rating">
-                <span class="star" data-value="1">★</span>
-                <span class="star" data-value="2">★</span>
-                <span class="star" data-value="3">★</span>
-                <span class="star" data-value="4">★</span>
-                <span class="star" data-value="5">★</span>
-            </div>
+            <!-- ⭐ NEW: Reset Reviews Button -->
+            <button id="resetReviews" style="margin-bottom:10px;">Reset All Reviews</button>
 
             <textarea id="review-input" placeholder="Write your review..."></textarea>
             <button id="submit-review">Submit Review</button>
 
             <h3>User Reviews:</h3>
-            <button id="resetReviews">Reset All Reviews</button>
             <ul id="review-list"></ul>
         </section>
     </main>
@@ -69,5 +48,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
