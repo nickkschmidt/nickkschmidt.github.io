@@ -51,9 +51,16 @@ submitReviewBtn.addEventListener("click", () => {
 
     const li = document.createElement("li");
     li.textContent = reviewText;
-    reviewList.appendChild(li);
+reviewList.appendChild(li);
 
-    reviewInput.value = "";
+// Save to localStorage
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+reviews.push(reviewText);
+localStorage.setItem("reviews", JSON.stringify(reviews));
+
+reviewInput.value = "";
+
 });
+
 
 
