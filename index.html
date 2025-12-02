@@ -24,6 +24,20 @@
             </ul>
         </section>
 
+        <h2>Add a New Movie</h2>
+        <form id="addMovieForm">
+          <label>Movie Title:</label>
+          <input type="text" id="newTitle" required>
+
+          <label>Description:</label>
+          <textarea id="newDescription" required></textarea>
+
+          <label>Poster URL (optional):</label>
+          <input type="text" id="newPoster">
+
+          <button type="submit">Add Movie</button>
+        </form>
+
         <!-- Movie Details -->
         <section id="movie-details">
             <h2>Movie Details</h2>
@@ -54,3 +68,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
