@@ -24,7 +24,6 @@ if (localStorage.getItem("movies")) {
 }
 
 let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
-let watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
 
 const movieList = document.querySelector("#movie-list ul");
 const movieDescription = document.getElementById("movie-description");
@@ -36,24 +35,17 @@ const addMovieBtn = document.getElementById("add-movie-btn");
 const newMovieTitle = document.getElementById("new-movie-title");
 const newMovieDescription = document.getElementById("new-movie-description");
 const newMoviePoster = document.getElementById("new-movie-poster");
-const deleteMovieBtn = document.getElementById("delete-movie-btn");
-const watchlistBtn = document.getElementById("watchlist-btn");
-const watchlistList = document.getElementById("watchlist-list");
-const searchInput = document.getElementById("search-input");
-
 const stars = document.querySelectorAll(".star");
+
 let selectedRating = 0;
 let currentMovie = null;
 
 // -------------------------------
 // Render Movie List
 // -------------------------------
-function renderMovieList(filter="") {
+function renderMovieList() {
     movieList.innerHTML = "";
-
-    movies
-    .filter(movie => movie.title.toLowerCase().includes(filter.toLowerCase()))
-    .forEach(movie => {
+    movies.forEach(movie => {
         const li = document.createElement("li");
         li.classList.add("movie-item");
         li.setAttribute("data-movie", movie.title);
@@ -65,7 +57,7 @@ function renderMovieList(filter="") {
         }
 
         li.appendChild(document.createTextNode(movie.title));
-        li.addEventListener("click", (e) => selectMovie(movie, e));
+        li.addEventListener("click", () => selectMovie(movie));
         movieList.appendChild(li);
     });
 }
@@ -73,10 +65,10 @@ function renderMovieList(filter="") {
 // -------------------------------
 // Select Movie
 // -------------------------------
-function selectMovie(movie, event) {
+function selectMovie(movie) {
     currentMovie = movie.title;
     document.querySelectorAll(".movie-item").forEach(item => item.classList.remove("selected"));
-    event.currentTarget.classList.add("selected");
+    document.querySelector(`.movie-item[data-movie="${movie.title}"]`)?.classList.add("selected");
 
     movieDescription.innerHTML = "";
     if (movie.poster) {
@@ -87,9 +79,6 @@ function selectMovie(movie, event) {
     const desc = document.createElement("p");
     desc.textContent = movie.description;
     movieDescription.appendChild(desc);
-
-    deleteMovieBtn.style.display = "inline-block";
-    watchlistBtn.style.display = "inline-block";
 
     selectedRating = 0;
     updateStarDisplay();
@@ -136,35 +125,12 @@ function renderReviews(title) {
         li.innerHTML = `
             <strong>${"★".repeat(r.rating) + "☆".repeat(5 - r.rating)}</strong><br>
             <span>${r.text}</span>
-            <button class="edit-btn" data-id="${r.id}">✏️</button>
-            <button class="delete-btn" data-id="${r.id}">🗑</button>
         `;
         reviewList.appendChild(li);
     });
-    attachReviewButtons(title);
 }
 
-function attachReviewButtons(title) {
-    document.querySelectorAll(".delete-btn").forEach(btn => {
-        btn.onclick = () => {
-            reviews[title] = reviews[title].filter(r => r.id != btn.dataset.id);
-            localStorage.setItem("reviews", JSON.stringify(reviews));
-            renderReviews(title);
-        };
-    });
-    document.querySelectorAll(".edit-btn").forEach(btn => {
-        btn.onclick = () => {
-            const r = reviews[title].find(r => r.id == btn.dataset.id);
-            const newText = prompt("Edit your review:", r.text);
-            if (newText && newText.trim() !== "") {
-                r.text = newText.trim();
-                localStorage.setItem("reviews", JSON.stringify(reviews));
-                renderReviews(title);
-            }
-        };
-    });
-}
-
+// Reset all reviews
 resetBtn.addEventListener("click", () => {
     if (!confirm("Delete ALL reviews?")) return;
     reviews = {};
@@ -172,15 +138,12 @@ resetBtn.addEventListener("click", () => {
     reviewList.innerHTML = "";
 });
 
-// -------------------------------
 // Add Movie
-// -------------------------------
 addMovieBtn.addEventListener("click", () => {
     const title = newMovieTitle.value.trim();
     const desc = newMovieDescription.value.trim();
     const poster = newMoviePoster.value.trim();
     if (!title || !desc) return alert("Please fill in movie title and description.");
-    if (movies.some(m => m.title === title)) return alert("Movie already exists!");
     movies.push({ title, description: desc, poster });
     localStorage.setItem("movies", JSON.stringify(movies));
     renderMovieList();
@@ -189,53 +152,5 @@ addMovieBtn.addEventListener("click", () => {
     newMoviePoster.value = "";
 });
 
-// -------------------------------
-// Delete Movie
-// -------------------------------
-deleteMovieBtn.addEventListener("click", () => {
-    if (!currentMovie) return;
-    if (!confirm(`Delete "${currentMovie}" and its reviews?`)) return;
-    movies = movies.filter(m => m.title !== currentMovie);
-    delete reviews[currentMovie];
-    localStorage.setItem("movies", JSON.stringify(movies));
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-    currentMovie = null;
-    movieDescription.innerHTML = "Click a movie to view its description.";
-    reviewList.innerHTML = "";
-    deleteMovieBtn.style.display = "none";
-    watchlistBtn.style.display = "none";
-    renderMovieList();
-});
-
-// -------------------------------
-// Watchlist
-// -------------------------------
-watchlistBtn.addEventListener("click", () => {
-    if (!currentMovie) return alert("Select a movie first.");
-    if (!watchlist.includes(currentMovie)) watchlist.push(currentMovie);
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    renderWatchlist();
-});
-
-function renderWatchlist() {
-    watchlistList.innerHTML = "";
-    watchlist.forEach(title => {
-        const li = document.createElement("li");
-        li.textContent = title;
-        watchlistList.appendChild(li);
-    });
-}
-
-renderWatchlist();
-
-// -------------------------------
-// Search
-// -------------------------------
-searchInput.addEventListener("input", () => {
-    renderMovieList(searchInput.value);
-});
-
-// -------------------------------
-// Initial Render
-// -------------------------------
+// Initial render
 renderMovieList();
