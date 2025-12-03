@@ -16,7 +16,7 @@ let movies = JSON.parse(localStorage.getItem("movies")) || {
     }
 };
 
-// Save movies anytime we change them
+// Save movies to LocalStorage
 function saveMovies() {
     localStorage.setItem("movies", JSON.stringify(movies));
 }
@@ -41,14 +41,12 @@ const newMoviePoster = document.getElementById("new-movie-poster");
 const resetBtn = document.getElementById("resetReviews");
 const watchlistBtn = document.getElementById("watchlist-btn");
 
-// Track currently selected movie
+// Track current movie and edit index
 let currentMovie = null;
-
-// Track edit mode
-let editIndex = null; // if null → adding new review; if number → editing existing review
+let editIndex = null;
 
 // =========================
-// Build Movie List UI
+// Render Movie List
 // =========================
 function updateMovieListUI() {
     movieList.innerHTML = "<h2>Movies</h2><ul id='movie-ul'></ul>";
@@ -60,7 +58,7 @@ function updateMovieListUI() {
         li.classList.add("movie-item");
         li.dataset.movie = movie;
 
-        // Attach click listener directly here
+        // ✅ Attach click listener directly
         li.addEventListener("click", () => selectMovie(movie, li));
 
         ul.appendChild(li);
@@ -70,17 +68,15 @@ function updateMovieListUI() {
 updateMovieListUI();
 
 // =========================
-// Load Movie Details
+// Select Movie Function
 // =========================
 function selectMovie(movie, liElement) {
     currentMovie = movie;
 
-    // Remove "active" class from all items
+    // Highlight selected movie
     document.querySelectorAll(".movie-item").forEach(item => {
         item.classList.remove("active");
     });
-
-    // Highlight the clicked movie
     liElement.classList.add("active");
 
     // Show details
@@ -93,11 +89,12 @@ function selectMovie(movie, liElement) {
     moviePoster.alt = movie;
     movieDetails.appendChild(moviePoster);
 
+    // Load reviews
     loadReviews(movie);
 }
 
 // =========================
-// Review Storage Helpers
+// Review Helpers
 // =========================
 function getReviews(movie) {
     let all = JSON.parse(localStorage.getItem("reviews")) || {};
@@ -111,7 +108,7 @@ function saveReviews(movie, list) {
 }
 
 // =========================
-// Render Review List
+// Load Reviews
 // =========================
 function loadReviews(movie) {
     const reviews = getReviews(movie);
@@ -129,7 +126,7 @@ function loadReviews(movie) {
 }
 
 // =========================
-// Submit Review (New or Edit)
+// Submit Review (Add or Edit)
 // =========================
 submitReviewBtn.addEventListener("click", () => {
     if (!currentMovie) {
@@ -138,16 +135,14 @@ submitReviewBtn.addEventListener("click", () => {
     }
 
     const text = reviewInput.value.trim();
-    if (text === "") return;
+    if (!text) return;
 
     let reviews = getReviews(currentMovie);
 
     if (editIndex === null) {
-        // Add new review
-        reviews.push(text);
+        reviews.push(text); // Add new
     } else {
-        // Save edited review
-        reviews[editIndex] = text;
+        reviews[editIndex] = text; // Edit existing
         submitReviewBtn.textContent = "Submit Review";
         editIndex = null;
     }
@@ -179,7 +174,7 @@ reviewList.addEventListener("click", (e) => {
         const index = e.target.dataset.index;
         let reviews = getReviews(currentMovie);
 
-        reviews.splice(index, 1); // Remove review
+        reviews.splice(index, 1);
         saveReviews(currentMovie, reviews);
 
         loadReviews(currentMovie);
@@ -187,14 +182,13 @@ reviewList.addEventListener("click", (e) => {
 });
 
 // =========================
-// Reset Reviews Button
+// Reset Reviews
 // =========================
 resetBtn.addEventListener("click", () => {
     if (!currentMovie) {
         alert("Select a movie to reset its reviews.");
         return;
     }
-
     if (!confirm("Delete ALL reviews for this movie?")) return;
 
     saveReviews(currentMovie, []);
@@ -242,4 +236,3 @@ watchlistBtn.addEventListener("click", () => {
         alert("Already in your watchlist.");
     }
 });
-
