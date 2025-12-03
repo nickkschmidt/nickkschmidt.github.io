@@ -59,6 +59,10 @@ function updateMovieListUI() {
         li.textContent = movie;
         li.classList.add("movie-item");
         li.dataset.movie = movie;
+
+        // Attach click listener directly here
+        li.addEventListener("click", () => selectMovie(movie, li));
+
         ul.appendChild(li);
     });
 }
@@ -68,12 +72,18 @@ updateMovieListUI();
 // =========================
 // Load Movie Details
 // =========================
-movieList.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("movie-item")) return;
-
-    const movie = e.target.dataset.movie;
+function selectMovie(movie, liElement) {
     currentMovie = movie;
 
+    // Remove "active" class from all items
+    document.querySelectorAll(".movie-item").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    // Highlight the clicked movie
+    liElement.classList.add("active");
+
+    // Show details
     movieDetails.innerHTML = `
         <h2>${movie}</h2>
         <p>${movies[movie].description}</p>
@@ -84,7 +94,7 @@ movieList.addEventListener("click", (e) => {
     movieDetails.appendChild(moviePoster);
 
     loadReviews(movie);
-});
+}
 
 // =========================
 // Review Storage Helpers
@@ -232,3 +242,4 @@ watchlistBtn.addEventListener("click", () => {
         alert("Already in your watchlist.");
     }
 });
+
