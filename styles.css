@@ -91,6 +91,16 @@ main {
     color: gold;
 }
 
+#movie-description img {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.movie-item img {
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
 #addMovieForm {
   margin-top: 25px;
   display: flex;
@@ -118,3 +128,4 @@ main {
 #addMovieForm button:hover {
   background: #45a049;
 }
+
