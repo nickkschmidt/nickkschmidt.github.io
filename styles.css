@@ -121,3 +121,32 @@ button:hover {
 .star.selected {
     color: orange;
 }
+
+#add-movie-section {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#add-movie-section input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+#add-movie-section button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#add-movie-section button:hover {
+    background-color: #ddd;
+}
