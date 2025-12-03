@@ -1,33 +1,29 @@
 // ---------------------------
-// Movies array
+// Movies array with posters
 // ---------------------------
 let movies = [
     { 
         title: "Inception", 
         description: "A skilled thief enters people's dreams to steal ideas.",
-        poster: "https://link-to-inception-poster.jpg"
+        poster: "https://m.media-amazon.com/images/I/51s+FtzMzNL._AC_.jpg"
     },
     { 
         title: "Interstellar", 
         description: "A team travels through a wormhole in search of a new home for humanity.",
-        poster: "https://link-to-interstellar-poster.jpg"
+        poster: "https://m.media-amazon.com/images/I/71nP7Gv2XCL._AC_SY679_.jpg"
     },
     { 
         title: "The Matrix", 
         description: "A hacker discovers the world is a simulated reality.",
-        poster: "https://link-to-matrix-poster.jpg"
+        poster: "https://m.media-amazon.com/images/I/51EG732BV3L.jpg"
     }
 ];
-
-const newMovie = { title, description, poster };
 
 // ---------------------------
 // Review storage
 // ---------------------------
 let movieReviews = JSON.parse(localStorage.getItem("movieReviews")) || {};
-movies.forEach(m => {
-    if (!movieReviews[m.title]) movieReviews[m.title] = [];
-});
+movies.forEach(m => { if (!movieReviews[m.title]) movieReviews[m.title] = []; });
 
 // ---------------------------
 // DOM Elements
@@ -48,38 +44,33 @@ function renderMovieList() {
     movies.forEach(movie => {
         const li = document.createElement("li");
         li.classList.add("movie-item");
-        li.textContent = movie.title;
         li.setAttribute("data-movie", movie.title);
+
+        if (movie.poster) {
+            const thumb = document.createElement("img");
+            thumb.src = movie.poster;
+            thumb.alt = movie.title + " Poster";
+            li.appendChild(thumb);
+        }
+
+        li.appendChild(document.createTextNode(movie.title));
         movieList.appendChild(li);
 
         li.addEventListener("click", () => {
-            // Highlight selected
             document.querySelectorAll(".movie-item").forEach(m => m.classList.remove("selected"));
             li.classList.add("selected");
 
-            // Clear details section
             movieDescription.innerHTML = "";
-
-            // Create image element if poster exists
             if (movie.poster) {
                 const img = document.createElement("img");
                 img.src = movie.poster;
                 img.alt = movie.title + " Poster";
-                img.style.maxWidth = "200px";
-                img.style.display = "block";
-                img.style.marginBottom = "10px";
                 movieDescription.appendChild(img);
             }
-
-            // Add description text
             const desc = document.createElement("p");
             desc.textContent = movie.description;
             movieDescription.appendChild(desc);
-            
-            // Show description
-            movieDescription.textContent = movie.description;
 
-            // Show reviews
             updateReviewList(movie.title);
         });
     });
@@ -99,7 +90,7 @@ function updateReviewList(movie) {
 }
 
 // ---------------------------
-// Star rating click
+// Star Rating
 // ---------------------------
 stars.forEach(star => {
     star.addEventListener("click", () => {
@@ -124,7 +115,6 @@ submitReviewBtn.addEventListener("click", () => {
     localStorage.setItem("movieReviews", JSON.stringify(movieReviews));
     updateReviewList(movie);
 
-    // Reset
     reviewInput.value = "";
     selectedRating = 0;
     stars.forEach(s => s.classList.remove("selected"));
@@ -138,13 +128,14 @@ addMovieForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const title = document.getElementById("newTitle").value.trim();
     const description = document.getElementById("newDescription").value.trim();
+    const poster = document.getElementById("newPoster").value.trim();
+
     if (!title || !description) return;
 
-    const newMovie = { title, description };
+    const newMovie = { title, description, poster: poster || null };
     movies.push(newMovie);
     if (!movieReviews[title]) movieReviews[title] = [];
-
-    renderMovieList(); // re-render movie list
+    renderMovieList();
     addMovieForm.reset();
 });
 
@@ -164,4 +155,3 @@ document.getElementById("resetReviews").addEventListener("click", () => {
 // Initial Render
 // ---------------------------
 renderMovieList();
-
