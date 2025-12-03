@@ -34,10 +34,10 @@
         <section id="review-section">
             <h2>Write a Review</h2>
 
-            <!-- ⭐ Reset Reviews Button -->
+            <!-- Reset Reviews Button -->
             <button id="resetReviews" style="margin-bottom:10px;">Reset All Reviews</button>
 
-            <!-- ⭐ Star Rating -->
+            <!-- Star Rating -->
             <div id="star-rating" style="margin-bottom:10px;">
                 <span class="star" data-value="1">★</span>
                 <span class="star" data-value="2">★</span>
@@ -52,6 +52,24 @@
             <h3>User Reviews:</h3>
             <ul id="review-list"></ul>
         </section>
+
+        <!-- Add New Movie Section -->
+        <section id="add-movie-section">
+            <h2>Add a New Movie</h2>
+            <form id="addMovieForm">
+                <label>Movie Title:</label>
+                <input type="text" id="newTitle" required>
+
+                <label>Description:</label>
+                <textarea id="newDescription" required></textarea>
+
+                <label>Poster URL (optional):</label>
+                <input type="text" id="newPoster">
+
+                <button type="submit">Add Movie</button>
+            </form>
+        </section>
+
     </main>
 
     <script src="script.js"></script>
