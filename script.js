@@ -10,12 +10,12 @@ let movies = [
     { 
         title: "Interstellar", 
         description: "A team travels through a wormhole in search of a new home for humanity.",
-        poster: "https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg"
+        poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
     },
     { 
         title: "The Matrix", 
         description: "A hacker discovers the world is a simulated reality.",
-        poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5Gm.jpg"
+        poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/p96dm7sCMn4VYAStA6siNz30G1r.jpg"
     }
 ];
 
@@ -233,3 +233,4 @@ resetBtn.addEventListener("click", () => {
     localStorage.setItem("reviews", JSON.stringify(reviews));
     reviewList.innerHTML = "";
 });
+
