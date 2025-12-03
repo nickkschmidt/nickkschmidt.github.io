@@ -6,58 +6,47 @@
     <title>Mini Movie Review Hub</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <header>
         <h1>🎬 Mini Movie Review Hub</h1>
-        <p>Select a movie, leave reviews, and add your own films!</p>
+        <p>Select a movie and leave your review!</p>
     </header>
 
     <main>
-
-        <!-- ===================== -->
-        <!-- MOVIE LIST -->
-        <!-- ===================== -->
+        <!-- Movie List -->
         <section id="movie-list">
             <h2>Movies</h2>
-            <ul id="movie-ul"></ul>
+            <ul></ul>
         </section>
 
-        <!-- ===================== -->
-        <!-- MOVIE DETAILS -->
-        <!-- ===================== -->
+        <!-- Movie Details -->
         <section id="movie-details">
             <h2>Movie Details</h2>
             <p id="movie-description">Click a movie to view its description.</p>
         </section>
 
-        <!-- ===================== -->
-        <!-- WATCHLIST -->
-        <!-- ===================== -->
-        <button id="watchlist-btn" class="small-btn">Add to Watchlist</button>
-
-        <!-- ===================== -->
-        <!-- REVIEW SECTION -->
-        <!-- ===================== -->
+        <!-- Review Section -->
         <section id="review-section">
-            <h2>User Reviews</h2>
-
-            <button id="resetReviews" class="danger-btn">Reset All Reviews</button>
+            <h2>Write a Review</h2>
+            
+            <!-- Star Rating -->
+            <div id="star-rating">
+                <span class="star" data-value="1">☆</span>
+                <span class="star" data-value="2">☆</span>
+                <span class="star" data-value="3">☆</span>
+                <span class="star" data-value="4">☆</span>
+                <span class="star" data-value="5">☆</span>
+            </div>
 
             <textarea id="review-input" placeholder="Write your review..."></textarea>
-            <button id="submit-review" class="primary-btn">Submit Review</button>
+            <button id="submit-review">Submit Review</button>
+            <button id="resetReviews">Reset All Reviews</button>
 
+            <h3>User Reviews:</h3>
             <ul id="review-list"></ul>
         </section>
+    </main>
 
-        <!-- ===================== -->
-        <!-- ADD MOVIE SECTION -->
-        <!-- ===================== -->
-        <section id="add-movie-section">
-            <h2>Add a New Movie</h2>
-
-            <input type="text" id="new-movie-name" placeholder="Movie Title">
-            <textarea id="new-movie-description" placeholder="Movie Description"></textarea>
-            <input type="text" id="new-movie-poster" placeholder="Poster Image URL (jpg/png)">
-
-            <button id="add-movie-btn" class="primary-btn">Add Movie</button
+    <script src="script.js"></script>
+</body>
+</html>
