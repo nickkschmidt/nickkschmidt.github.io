@@ -5,7 +5,7 @@ let movies = [
     { 
         title: "Inception", 
         description: "A skilled thief enters people's dreams to steal ideas.",
-        poster: "https://m.media-amazon.com/images/I/51s+FtzMzNL._AC_.jpg"
+        poster: "http://www.impawards.com/2010/posters/inception.jpg"
     },
     { 
         title: "Interstellar", 
@@ -15,7 +15,7 @@ let movies = [
     { 
         title: "The Matrix", 
         description: "A hacker discovers the world is a simulated reality.",
-        poster: "https://m.media-amazon.com/images/I/51EG732BV3L.jpg"
+        poster: "http://www.impawards.com/2014/posters/interstellar.jpg"
     }
 ];
 
@@ -155,3 +155,4 @@ document.getElementById("resetReviews").addEventListener("click", () => {
 // Initial Render
 // ---------------------------
 renderMovieList();
+
