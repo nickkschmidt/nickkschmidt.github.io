@@ -32,6 +32,7 @@ const submitReviewBtn = document.getElementById("submit-review");
 const reviewList = document.getElementById("review-list");
 const resetBtn = document.getElementById("resetReviews");
 const addMovieBtn = document.getElementById("add-movie-btn");
+const deleteMovieBtn = document.getElementById("delete-movie-btn");
 const newMovieTitle = document.getElementById("new-movie-title");
 const newMovieDescription = document.getElementById("new-movie-description");
 const newMoviePoster = document.getElementById("new-movie-poster");
@@ -62,11 +63,36 @@ function renderMovieList() {
     });
 }
 
+deleteMovieBtn.addEventListener("click", () => {
+    if (!currentMovie) return;
+
+    if (!confirm(`Are you sure you want to delete "${currentMovie}"? This will also delete its reviews.`)) return;
+
+    // Remove movie from movies array
+    movies = movies.filter(m => m.title !== currentMovie);
+
+    // Remove its reviews
+    delete reviews[currentMovie];
+
+    // Update localStorage
+    localStorage.setItem("movies", JSON.stringify(movies));
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+
+    // Clear selection and UI
+    currentMovie = null;
+    movieDescription.innerHTML = "Click a movie to view its description.";
+    reviewList.innerHTML = "";
+    deleteMovieBtn.style.display = "none";
+
+    renderMovieList();
+});
+
 // -------------------------------
 // Select Movie
 // -------------------------------
 function selectMovie(movie) {
     currentMovie = movie.title;
+
     document.querySelectorAll(".movie-item").forEach(item => item.classList.remove("selected"));
     document.querySelector(`.movie-item[data-movie="${movie.title}"]`)?.classList.add("selected");
 
@@ -83,6 +109,9 @@ function selectMovie(movie) {
     selectedRating = 0;
     updateStarDisplay();
     renderReviews(movie.title);
+
+    // Show delete button
+    deleteMovieBtn.style.display = "inline-block";
 }
 
 // -------------------------------
@@ -154,3 +183,4 @@ addMovieBtn.addEventListener("click", () => {
 
 // Initial render
 renderMovieList();
+
