@@ -5,17 +5,17 @@ let movies = [
     { 
         title: "Inception", 
         description: "A skilled thief enters people's dreams to steal ideas.",
-        poster: "http://www.impawards.com/2010/posters/inception.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg"
     },
     { 
         title: "Interstellar", 
         description: "A team travels through a wormhole in search of a new home for humanity.",
-        poster: "https://m.media-amazon.com/images/I/71nP7Gv2XCL._AC_SY679_.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
     },
     { 
         title: "The Matrix", 
         description: "A hacker discovers the world is a simulated reality.",
-        poster: "http://www.impawards.com/2014/posters/interstellar.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
     }
 ];
 
@@ -155,4 +155,5 @@ document.getElementById("resetReviews").addEventListener("click", () => {
 // Initial Render
 // ---------------------------
 renderMovieList();
+
 
