@@ -10,7 +10,7 @@ let movies = [
     { 
         title: "Interstellar", 
         description: "A team travels through a wormhole in search of a new home for humanity.",
-        poster: "https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
     },
     { 
         title: "The Matrix", 
@@ -155,6 +155,7 @@ document.getElementById("resetReviews").addEventListener("click", () => {
 // Initial Render
 // ---------------------------
 renderMovieList();
+
 
 
 
