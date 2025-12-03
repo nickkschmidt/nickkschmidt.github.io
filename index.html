@@ -13,11 +13,6 @@
     </header>
 
     <main>
-        <!-- Movie Search -->
-        <section id="search-section">
-            <input type="text" id="search-input" placeholder="Search movies...">
-        </section>
-
         <!-- Movie List -->
         <section id="movie-list">
             <h2>Movies</h2>
@@ -28,14 +23,12 @@
         <section id="movie-details">
             <h2>Movie Details</h2>
             <p id="movie-description">Click a movie to view its description.</p>
-            <button id="delete-movie-btn" style="display:none;">Delete This Movie</button>
-            <button id="watchlist-btn" style="display:none;">Add to Watchlist</button>
         </section>
 
         <!-- Review Section -->
         <section id="review-section">
             <h2>Write a Review</h2>
-
+            
             <!-- Star Rating -->
             <div id="star-rating">
                 <span class="star" data-value="1">☆</span>
@@ -44,7 +37,7 @@
                 <span class="star" data-value="4">☆</span>
                 <span class="star" data-value="5">☆</span>
             </div>
-
+            
             <textarea id="review-input" placeholder="Write your review..."></textarea>
             <button id="submit-review">Submit Review</button>
             <button id="resetReviews">Reset All Reviews</button>
@@ -61,13 +54,6 @@
             <input type="text" id="new-movie-poster" placeholder="Poster URL (optional)">
             <button id="add-movie-btn">Add Movie</button>
         </section>
-
-        <!-- Watchlist Section -->
-        <section id="watchlist-section">
-            <h2>Your Watchlist</h2>
-            <ul id="watchlist-list"></ul>
-        </section>
-
     </main>
 
     <script src="script.js"></script>
