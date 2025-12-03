@@ -5,7 +5,7 @@ let movies = [
     { 
         title: "Inception", 
         description: "A skilled thief enters people's dreams to steal ideas.",
-        poster: "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/edv5CZvWj09upOsy2Y6IwDhK8bt.jpg"
     },
     { 
         title: "Interstellar", 
@@ -155,5 +155,6 @@ document.getElementById("resetReviews").addEventListener("click", () => {
 // Initial Render
 // ---------------------------
 renderMovieList();
+
 
 
