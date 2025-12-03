@@ -36,6 +36,10 @@ const reviewInput = document.getElementById("review-input");
 const submitReviewBtn = document.getElementById("submit-review");
 const reviewList = document.getElementById("review-list");
 const resetBtn = document.getElementById("resetReviews");
+const addMovieBtn = document.getElementById("add-movie-btn");
+const newMovieTitle = document.getElementById("new-movie-title");
+const newMovieDescription = document.getElementById("new-movie-description");
+const newMoviePoster = document.getElementById("new-movie-poster");
 let currentMovie = null;
 
 // Star rating elements
@@ -190,7 +194,6 @@ function renderReviews(movieTitle) {
 // Edit & Delete Review Buttons
 // -------------------------------
 function attachReviewButtons(movieTitle) {
-
     // Delete review
     document.querySelectorAll(".delete-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -223,6 +226,36 @@ function attachReviewButtons(movieTitle) {
     });
 }
 
+// Add Movie Event
+addMovieBtn.addEventListener("click", () => {
+    const title = newMovieTitle.value.trim();
+    const description = newMovieDescription.value.trim();
+    const poster = newMoviePoster.value.trim();
+
+    if (!title || !description) {
+        alert("Please fill in the movie title and description.");
+        return;
+    }
+
+    // Add to movies array
+    movies.push({
+        title: title,
+        description: description,
+        poster: poster
+    });
+
+    // Save to localStorage
+    localStorage.setItem("movies", JSON.stringify(movies));
+
+    // Re-render movie list
+    renderMovieList();
+
+    // Clear form fields
+    newMovieTitle.value = "";
+    newMovieDescription.value = "";
+    newMoviePoster.value = "";
+});
+
 // -------------------------------
 // Reset All Reviews
 // -------------------------------
@@ -233,5 +266,4 @@ resetBtn.addEventListener("click", () => {
     localStorage.setItem("reviews", JSON.stringify(reviews));
     reviewList.innerHTML = "";
 });
-
 
