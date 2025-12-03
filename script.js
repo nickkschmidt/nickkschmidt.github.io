@@ -10,12 +10,12 @@ let movies = [
     { 
         title: "Interstellar", 
         description: "A team travels through a wormhole in search of a new home for humanity.",
-        poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+        poster: "https://mythicwall.com/cdn/shop/files/Interstellar_2BMovie_2B_2Bposter_2BPrint_2BWall_2BArt_2BPoster_2B1-W0pfS_1024x1024.jpg?v=1762442294"
     },
     { 
         title: "The Matrix", 
         description: "A hacker discovers the world is a simulated reality.",
-        poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/p96dm7sCMn4VYAStA6siNz30G1r.jpg"
+        poster: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/83c9adee-fb29-40a6-8232-2f5c1a310874/d25m56x-382054fe-612f-44dd-939d-28df1dfbcb71.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi84M2M5YWRlZS1mYjI5LTQwYTYtODIzMi0yZjVjMWEzMTA4NzQvZDI1bTU2eC0zODIwNTRmZS02MTJmLTQ0ZGQtOTM5ZC0yOGRmMWRmYmNiNzEuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LmCL_oCJdLW74Yuuzb7mqMM-ruqoyA9qJEOht2IyMMc"
     }
 ];
 
@@ -233,4 +233,5 @@ resetBtn.addEventListener("click", () => {
     localStorage.setItem("reviews", JSON.stringify(reviews));
     reviewList.innerHTML = "";
 });
+
 
