@@ -87,25 +87,28 @@ function selectMovie(movie) {
     document.querySelectorAll(".movie-item")
         .forEach(item => item.classList.remove("selected"));
 
+    // Highlight selected movie
     event.target.classList.add("selected");
 
-    // Render poster + description
-    movieDescription.innerHTML = "";
-
+    // Show movie details
+    const movieDescriptionEl = document.getElementById("movie-description");
+    movieDescriptionEl.innerHTML = "";
     if (movie.poster) {
         const img = document.createElement("img");
         img.src = movie.poster;
         img.style.maxWidth = "200px";
         img.style.display = "block";
         img.style.marginBottom = "10px";
-        movieDescription.appendChild(img);
+        movieDescriptionEl.appendChild(img);
     }
-
     const desc = document.createElement("p");
     desc.textContent = movie.description;
-    movieDescription.appendChild(desc);
+    movieDescriptionEl.appendChild(desc);
 
-    // Load that movie’s reviews
+    // Show delete button
+    deleteMovieBtn.style.display = "inline-block";
+
+    // Load reviews for selected movie
     renderReviews(movie.title);
 }
 
@@ -293,36 +296,5 @@ deleteMovieBtn.addEventListener("click", () => {
     // Re-render movie list
     renderMovieList();
 });
-
-// Show the delete button whenever a movie is selected
-function selectMovie(movie) {
-    currentMovie = movie.title;
-
-    document.querySelectorAll(".movie-item")
-        .forEach(item => item.classList.remove("selected"));
-
-    // Highlight selected movie
-    event.target.classList.add("selected");
-
-    // Show movie details
-    const movieDescriptionEl = document.getElementById("movie-description");
-    movieDescriptionEl.innerHTML = "";
-    if (movie.poster) {
-        const img = document.createElement("img");
-        img.src = movie.poster;
-        img.style.maxWidth = "200px";
-        img.style.display = "block";
-        img.style.marginBottom = "10px";
-        movieDescriptionEl.appendChild(img);
-    }
-    const desc = document.createElement("p");
-    desc.textContent = movie.description;
-    movieDescriptionEl.appendChild(desc);
-
-    // Show delete button
-    deleteMovieBtn.style.display = "inline-block";
-
-    // Load reviews for selected movie
-    renderReviews(movie.title);
-}
  
+
