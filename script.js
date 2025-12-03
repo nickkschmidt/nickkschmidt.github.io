@@ -1,6 +1,6 @@
-// ---------------------------
-// Movies array with posters
-// ---------------------------
+// -------------------------------
+// Movie Data (with posters)
+// -------------------------------
 let movies = [
     { 
         title: "Inception", 
@@ -10,153 +10,226 @@ let movies = [
     { 
         title: "Interstellar", 
         description: "A team travels through a wormhole in search of a new home for humanity.",
-        poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg"
     },
     { 
         title: "The Matrix", 
         description: "A hacker discovers the world is a simulated reality.",
-        poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
+        poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5Gm.jpg"
     }
 ];
 
-// ---------------------------
-// Review storage
-// ---------------------------
-let movieReviews = JSON.parse(localStorage.getItem("movieReviews")) || {};
-movies.forEach(m => { if (!movieReviews[m.title]) movieReviews[m.title] = []; });
+// Load stored movies if any
+if (localStorage.getItem("movies")) {
+    movies = JSON.parse(localStorage.getItem("movies"));
+}
 
-// ---------------------------
-// DOM Elements
-// ---------------------------
+// -------------------------------
+// Reviews (from localStorage)
+// -------------------------------
+let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
+
+// DOM elements
 const movieList = document.querySelector("#movie-list ul");
 const movieDescription = document.getElementById("movie-description");
 const reviewInput = document.getElementById("review-input");
 const submitReviewBtn = document.getElementById("submit-review");
 const reviewList = document.getElementById("review-list");
+const resetBtn = document.getElementById("resetReviews");
+let currentMovie = null;
+
+// Star rating elements
 const stars = document.querySelectorAll(".star");
 let selectedRating = 0;
 
-// ---------------------------
+// -------------------------------
 // Render Movie List
-// ---------------------------
+// -------------------------------
 function renderMovieList() {
     movieList.innerHTML = "";
+
     movies.forEach(movie => {
         const li = document.createElement("li");
         li.classList.add("movie-item");
         li.setAttribute("data-movie", movie.title);
 
+        // Thumbnail
         if (movie.poster) {
-            const thumb = document.createElement("img");
-            thumb.src = movie.poster;
-            thumb.alt = movie.title + " Poster";
-            li.appendChild(thumb);
+            const img = document.createElement("img");
+            img.src = movie.poster;
+            img.style.width = "50px";
+            img.style.marginRight = "10px";
+            img.style.borderRadius = "4px";
+            li.appendChild(img);
         }
 
-        li.appendChild(document.createTextNode(movie.title));
+        const text = document.createTextNode(movie.title);
+        li.appendChild(text);
+
+        li.addEventListener("click", () => selectMovie(movie));
+
         movieList.appendChild(li);
+    });
+}
 
-        li.addEventListener("click", () => {
-            document.querySelectorAll(".movie-item").forEach(m => m.classList.remove("selected"));
-            li.classList.add("selected");
+renderMovieList();
 
-            movieDescription.innerHTML = "";
-            if (movie.poster) {
-                const img = document.createElement("img");
-                img.src = movie.poster;
-                img.alt = movie.title + " Poster";
-                movieDescription.appendChild(img);
+// -------------------------------
+// Movie Selection
+// -------------------------------
+function selectMovie(movie) {
+    currentMovie = movie.title;
+
+    document.querySelectorAll(".movie-item")
+        .forEach(item => item.classList.remove("selected"));
+
+    event.target.classList.add("selected");
+
+    // Render poster + description
+    movieDescription.innerHTML = "";
+
+    if (movie.poster) {
+        const img = document.createElement("img");
+        img.src = movie.poster;
+        img.style.maxWidth = "200px";
+        img.style.display = "block";
+        img.style.marginBottom = "10px";
+        movieDescription.appendChild(img);
+    }
+
+    const desc = document.createElement("p");
+    desc.textContent = movie.description;
+    movieDescription.appendChild(desc);
+
+    // Load that movie’s reviews
+    renderReviews(movie.title);
+}
+
+// -------------------------------
+// Star Rating System
+// -------------------------------
+stars.forEach(star => {
+    star.addEventListener("click", () => {
+        selectedRating = Number(star.getAttribute("data-value"));
+        updateStarDisplay();
+    });
+});
+
+function updateStarDisplay() {
+    stars.forEach(star => {
+        star.classList.toggle(
+            "selected",
+            Number(star.getAttribute("data-value")) <= selectedRating
+        );
+    });
+}
+
+// -------------------------------
+// Submit Review
+// -------------------------------
+submitReviewBtn.addEventListener("click", () => {
+    if (!currentMovie) {
+        alert("Select a movie first.");
+        return;
+    }
+
+    const reviewText = reviewInput.value.trim();
+    if (reviewText === "") {
+        alert("Please write a review.");
+        return;
+    }
+
+    if (!reviews[currentMovie]) reviews[currentMovie] = [];
+
+    const review = {
+        id: Date.now(),
+        text: reviewText,
+        rating: selectedRating || 0
+    };
+
+    reviews[currentMovie].push(review);
+
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+
+    reviewInput.value = "";
+    selectedRating = 0;
+    updateStarDisplay();
+
+    renderReviews(currentMovie);
+});
+
+// -------------------------------
+// Render Reviews (with Edit/Delete)
+// -------------------------------
+function renderReviews(movieTitle) {
+    reviewList.innerHTML = "";
+
+    const movieReviews = reviews[movieTitle] || [];
+
+    movieReviews.forEach(review => {
+        const li = document.createElement("li");
+
+        const starsDisplay =
+            "★".repeat(review.rating) +
+            "☆".repeat(5 - review.rating);
+
+        li.innerHTML = `
+            <strong>${starsDisplay}</strong><br>
+            <span class="review-text">${review.text}</span>
+            <button class="edit-btn" data-id="${review.id}">✏️</button>
+            <button class="delete-btn" data-id="${review.id}">🗑</button>
+        `;
+
+        reviewList.appendChild(li);
+    });
+
+    attachReviewButtons(movieTitle);
+}
+
+// -------------------------------
+// Edit & Delete Review Buttons
+// -------------------------------
+function attachReviewButtons(movieTitle) {
+
+    // Delete review
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = Number(btn.getAttribute("data-id"));
+
+            reviews[movieTitle] = reviews[movieTitle].filter(
+                review => review.id !== id
+            );
+
+            localStorage.setItem("reviews", JSON.stringify(reviews));
+            renderReviews(movieTitle);
+        });
+    });
+
+    // Edit review
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = Number(btn.getAttribute("data-id"));
+            const movieReviews = reviews[movieTitle];
+            const reviewToEdit = movieReviews.find(r => r.id === id);
+
+            const newText = prompt("Edit your review:", reviewToEdit.text);
+
+            if (newText && newText.trim() !== "") {
+                reviewToEdit.text = newText.trim();
+                localStorage.setItem("reviews", JSON.stringify(reviews));
+                renderReviews(movieTitle);
             }
-            const desc = document.createElement("p");
-            desc.textContent = movie.description;
-            movieDescription.appendChild(desc);
-
-            updateReviewList(movie.title);
         });
     });
 }
 
-// ---------------------------
-// Update Review List
-// ---------------------------
-function updateReviewList(movie) {
+// -------------------------------
+// Reset All Reviews
+// -------------------------------
+resetBtn.addEventListener("click", () => {
+    if (!confirm("Delete ALL reviews?")) return;
+
+    reviews = {};
+    localStorage.setItem("reviews", JSON.stringify(reviews));
     reviewList.innerHTML = "";
-    movieReviews[movie].forEach(review => {
-        const li = document.createElement("li");
-        const starDisplay = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
-        li.textContent = `${starDisplay} — ${review.text}`;
-        reviewList.appendChild(li);
-    });
-}
-
-// ---------------------------
-// Star Rating
-// ---------------------------
-stars.forEach(star => {
-    star.addEventListener("click", () => {
-        selectedRating = parseInt(star.dataset.value);
-        stars.forEach(s => s.classList.toggle("selected", parseInt(s.dataset.value) <= selectedRating));
-    });
 });
-
-// ---------------------------
-// Submit Review
-// ---------------------------
-submitReviewBtn.addEventListener("click", () => {
-    const reviewText = reviewInput.value.trim();
-    if (!reviewText) return alert("Please write a review.");
-    if (selectedRating === 0) return alert("Please select a rating.");
-
-    const selected = document.querySelector(".movie-item.selected");
-    if (!selected) return alert("Select a movie first.");
-
-    const movie = selected.dataset.movie;
-    movieReviews[movie].push({ rating: selectedRating, text: reviewText });
-    localStorage.setItem("movieReviews", JSON.stringify(movieReviews));
-    updateReviewList(movie);
-
-    reviewInput.value = "";
-    selectedRating = 0;
-    stars.forEach(s => s.classList.remove("selected"));
-});
-
-// ---------------------------
-// Add Movie Form
-// ---------------------------
-const addMovieForm = document.getElementById("addMovieForm");
-addMovieForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const title = document.getElementById("newTitle").value.trim();
-    const description = document.getElementById("newDescription").value.trim();
-    const poster = document.getElementById("newPoster").value.trim();
-
-    if (!title || !description) return;
-
-    const newMovie = { title, description, poster: poster || null };
-    movies.push(newMovie);
-    if (!movieReviews[title]) movieReviews[title] = [];
-    renderMovieList();
-    addMovieForm.reset();
-});
-
-// ---------------------------
-// Reset Reviews Button
-// ---------------------------
-document.getElementById("resetReviews").addEventListener("click", () => {
-    localStorage.removeItem("movieReviews");
-    movieReviews = {};
-    movies.forEach(m => movieReviews[m.title] = []);
-    const selected = document.querySelector(".movie-item.selected");
-    if (selected) updateReviewList(selected.dataset.movie);
-    alert("All reviews cleared!");
-});
-
-// ---------------------------
-// Initial Render
-// ---------------------------
-renderMovieList();
-
-
-
-
-
