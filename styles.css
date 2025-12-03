@@ -119,3 +119,26 @@ main {
     border-radius: 6px;
     border: 1px solid #ccc;
 }
+
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-btn,
+.delete-btn {
+    margin-left: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    background: none;
+}
+
+.delete-btn:hover {
+    color: red;
+}
+
+.edit-btn:hover {
+    color: blue;
+}
