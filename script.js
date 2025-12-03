@@ -2,10 +2,24 @@
 // Movies array
 // ---------------------------
 let movies = [
-    { title: "Inception", description: "A skilled thief enters people's dreams to steal ideas." },
-    { title: "Interstellar", description: "A team travels through a wormhole in search of a new home for humanity." },
-    { title: "The Matrix", description: "A hacker discovers the world is a simulated reality." }
+    { 
+        title: "Inception", 
+        description: "A skilled thief enters people's dreams to steal ideas.",
+        poster: "https://link-to-inception-poster.jpg"
+    },
+    { 
+        title: "Interstellar", 
+        description: "A team travels through a wormhole in search of a new home for humanity.",
+        poster: "https://link-to-interstellar-poster.jpg"
+    },
+    { 
+        title: "The Matrix", 
+        description: "A hacker discovers the world is a simulated reality.",
+        poster: "https://link-to-matrix-poster.jpg"
+    }
 ];
+
+const newMovie = { title, description, poster };
 
 // ---------------------------
 // Review storage
@@ -43,6 +57,25 @@ function renderMovieList() {
             document.querySelectorAll(".movie-item").forEach(m => m.classList.remove("selected"));
             li.classList.add("selected");
 
+            // Clear details section
+            movieDescription.innerHTML = "";
+
+            // Create image element if poster exists
+            if (movie.poster) {
+                const img = document.createElement("img");
+                img.src = movie.poster;
+                img.alt = movie.title + " Poster";
+                img.style.maxWidth = "200px";
+                img.style.display = "block";
+                img.style.marginBottom = "10px";
+                movieDescription.appendChild(img);
+            }
+
+            // Add description text
+            const desc = document.createElement("p");
+            desc.textContent = movie.description;
+            movieDescription.appendChild(desc);
+            
             // Show description
             movieDescription.textContent = movie.description;
 
@@ -131,3 +164,4 @@ document.getElementById("resetReviews").addEventListener("click", () => {
 // Initial Render
 // ---------------------------
 renderMovieList();
+
